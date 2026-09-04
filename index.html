@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>MuniGuía-Casma — Te ayudamos con tus trámites municipales</title>
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<script>
+  // Si assets/logo.png no carga, mostramos las iniciales "MG" en su lugar.
+  // Esta función se define aquí (antes que las imágenes) para no perder
+  // el evento "error" por una carrera con la carga de script.js.
+  function handleLogoError(img) {
+    img.onerror = null;
+    var span = document.createElement("span");
+    span.className = img.className + " brand__mark--fallback";
+    span.textContent = "MG";
+    img.replaceWith(span);
+  }
+  // La pantalla de bienvenida intenta usar primero el escudo institucional
+  // de Casma (assets/escudo-casma.png). Si ese archivo todavía no existe,
+  // cae automáticamente al logo simple, y si tampoco existe, a las iniciales.
+  function handleShieldError(img) {
+    if (!img.dataset.fallbackStep) {
+      img.dataset.fallbackStep = "1";
+      img.src = "assets/logo.png";
+    } else {
+      handleLogoError(img);
+    }
+  }
+</script>
+
+
+<div class="layout">
+<div class="device">
+  <div class="app lang-pending" id="app">
+
+    <!-- ============ BARRA DE ACCESIBILIDAD (siempre visible) ============ -->
+    <div class="access-bar">
+      <div class="access-group access-group--scale">
+        <span class="access-bar__label" data-i18n="accessLabel">Tamaño de letra</span>
+        <div class="access-bar__controls" role="group" aria-label="Cambiar tamaño de letra">
+          <button type="button" class="access-btn" data-scale="sm">A-</button>
+          <button type="button" class="access-btn is-active" data-scale="md">A</button>
+          <button type="button" class="access-btn" data-scale="lg">A+</button>
+        </div>
+      </div>
+      <div class="access-group access-group--lang">
+        <span class="access-bar__label" data-i18n="languageLabel">Idioma</span>
+        <div class="access-bar__controls" role="group" aria-label="Cambiar idioma">
+          <button type="button" class="access-btn lang-btn" data-lang="es">ES</button>
+          <button type="button" class="access-btn lang-btn" data-lang="qu">QU</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen-wrapper">
+
+      <!-- ============ PANTALLA: SELECCIÓN DE IDIOMA ============ -->
+      <section class="screen is-active" id="screen-language" data-screen="language">
+        <div class="scroll lang-scroll">
+          <div class="lang-hero">
+            <img class="lang-hero__logo" id="lang-logo" src="assets/escudo-casma.png" alt="Escudo de la Municipalidad de Casma" onerror="handleShieldError(this)">
+            <h1 class="lang-hero__name">MuniGuía-Casma</h1>
+            <p class="lang-hero__tag">Tu guía fácil para realizar trámites</p>
+          </div>
+
+          <h2 class="lang-question">Elige tu idioma</h2>
+          <p class="lang-question__sub">Imaymana simita akllay</p>
+
+          <div class="lang-options">
+            <button type="button" class="lang-card" data-lang-select="es">
+              <span class="lang-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M4 5H20V16H9L4 20V5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="lang-card__code">ES</span>
+              <span class="lang-card__title">Español</span>
+              <span class="lang-card__sub">Continuar en español</span>
+            </button>
+
+            <button type="button" class="lang-card" data-lang-select="qu">
+              <span class="lang-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M4 5H20V16H9L4 20V5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="lang-card__code">QU</span>
+              <span class="lang-card__title">Quechua</span>
+              <span class="lang-card__sub">Continuar en quechua</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PANTALLA: INICIO ============ -->
+      <section class="screen" id="screen-home" data-screen="home">
+
+        <header class="topbar topbar--home">
+          <div class="brand">
+            <img class="brand__mark" id="brand-logo" src="assets/logo.png" alt="Logo de MuniGuía: un robot asistente con un poncho andino, un sol y un campanario" onerror="handleLogoError(this)">
+            <div class="brand__text">
+              <h1 class="brand__name">MuniGuía-Casma</h1>
+              <p class="brand__tag" data-i18n="appTagline">Te ayudamos a conocer los pasos de tu trámite</p>
+            </div>
+          </div>
+        </header>
+
+        <div class="scroll">
+
+          <h2 class="greeting__question" data-i18n="whatDoYouNeed">¿Qué necesitas hacer?</h2>
+
+          <div class="search">
+            <label class="search__box">
+              <svg class="search__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+                <path d="M20 20L16.5 16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <input type="text" id="search-input" data-i18n-placeholder="searchPlaceholder" placeholder="Buscar trámite, por ejemplo: licencia, impuesto…" autocomplete="off">
+            </label>
+          </div>
+
+          <h3 class="section-label" data-i18n="frequentProcedures">Trámites frecuentes</h3>
+
+          <div class="ticket-list" id="tramite-list" role="list">
+            <!-- Tarjetas de trámites generadas por JavaScript -->
+          </div>
+
+          <p class="empty-state" id="empty-state" data-i18n="emptyState" hidden>No encontramos un trámite con ese nombre. Prueba con otra palabra o usa la opción de abajo.</p>
+
+          <button class="unsure-btn" id="btn-unsure" type="button">
+            <span class="unsure-btn__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M9.5 9.5C9.5 8 10.6 7 12 7C13.4 7 14.5 8 14.5 9.3C14.5 10.6 13.2 11 12.4 11.7C12 12 12 12.4 12 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16.2" r="1" fill="currentColor"/></svg>
+            </span>
+            <span class="unsure-btn__text">
+              <strong data-i18n="unsureTitle">No sé qué trámite necesito</strong>
+              <small data-i18n="unsureSub">Te hago unas preguntas simples y te oriento</small>
+            </span>
+            <span class="unsure-btn__arrow" aria-hidden="true">→</span>
+          </button>
+
+          <p class="footer-note" data-i18n="footerNote">Prototipo educativo desarrollado para orientación ciudadana. No constituye una plataforma oficial de la Municipalidad.</p>
+
+        </div>
+      </section>
+
+      <!-- ============ PANTALLA: DETALLE DE TRÁMITE ============ -->
+      <section class="screen" id="screen-detail" data-screen="detail">
+        <header class="topbar">
+          <button class="back-btn" data-action="go-home" aria-label="Volver al inicio">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span data-i18n="back">Volver</span>
+          </button>
+          <h1 class="topbar__title" id="detail-title" data-i18n="fichaLabel">Ficha de trámite</h1>
+        </header>
+
+        <div class="scroll" id="detail-body">
+          <!-- Contenido del trámite generado por JavaScript -->
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ============ NAVEGACIÓN INFERIOR ============ -->
+    <nav class="tabbar" id="tabbar">
+      <button class="tab is-active" data-action="go-home" data-tab="home" type="button">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 11L12 4L20 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10V19H18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-i18n="home">Inicio</span>
+      </button>
+      <button class="tab" data-action="go-assistant" data-tab="assistant" type="button">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5H20V16H9L4 20V5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span data-i18n="assistantTab">Asistente</span>
+      </button>
+    </nav>
+
+  </div>
+</div>
+
+  <!-- ============ PANEL DEL ASISTENTE CON IA ============
+       En celular: pantalla completa que se desliza sobre la app (botón "Asistente" o "No sé qué trámite").
+       En escritorio (≥900px): panel fijo, siempre visible, a la derecha del teléfono. -->
+  <section class="ai-panel" id="ai-panel" aria-label="Asistente con inteligencia artificial">
+    <header class="topbar ai-panel__header">
+      <button class="back-btn ai-panel__close" id="ai-panel-close" aria-label="Cerrar asistente">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-i18n="back">Volver</span>
+      </button>
+      <div class="ai-panel__title-block">
+        <h1 class="topbar__title" data-i18n="aiChatTitle">Asistente con IA</h1>
+        <p class="ai-panel__subtitle" data-i18n="aiChatSubtitle">Respuestas generadas por inteligencia artificial</p>
+      </div>
+      <button class="restart-btn" id="ai-panel-clear" type="button" aria-label="Borrar la conversación">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 7H20M9 7V4.8C9 4.4 9.4 4 9.8 4H14.2C14.6 4 15 4.4 15 4.8V7M18 7L17.3 19.2C17.3 19.6 16.9 20 16.5 20H7.5C7.1 20 6.7 19.6 6.7 19.2L6 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </header>
+
+    <div class="scroll chat-scroll" id="ai-chat-log">
+      <!-- Burbujas de conversación generadas por JavaScript -->
+    </div>
+
+    <div class="ai-panel__composer">
+      <p class="ai-disclaimer" data-i18n="aiDisclaimer">Las respuestas son generadas por inteligencia artificial y pueden contener errores. Verifica siempre en la municipalidad.</p>
+      <div class="ai-panel__row">
+        <textarea id="ai-chat-input" class="ai-chat-input" rows="1" data-i18n-placeholder="aiChatPlaceholder" placeholder="Escribe tu pregunta..."></textarea>
+        <button type="button" class="ai-send-btn" id="ai-chat-send" aria-label="Enviar mensaje">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 12L20 4L13 20L11 13L4 12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
