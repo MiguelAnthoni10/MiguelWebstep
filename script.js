@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MuniGuía — script.js
+   Pushaq-IA — script.js
    --------------------------------------------------------------------------
    Este archivo está dividido en partes:
      1) ÍCONOS SVG          -> símbolos reutilizables en toda la app
@@ -421,14 +421,14 @@ const TRANSLATIONS = {
       feedbackNoteLabel: "¿Qué podríamos mejorar? (opcional)",
       feedbackNotePlaceholder: "Escribe aquí tu comentario...",
       feedbackSubmit: "Enviar comentario",
-      feedbackThanks: "¡Gracias! Tu comentario nos ayuda a mejorar MuniGuía-Casma.",
+      feedbackThanks: "¡Gracias! Tu comentario nos ayuda a mejorar Pushaq-IA.",
       backHome: "Volver al inicio",
       fichaLabel: "Ficha de trámite",
       footerNote: "Prototipo educativo desarrollado para orientación ciudadana. No constituye una plataforma oficial de la Municipalidad.",
       aiChatTitle: "Asistente con IA",
       aiChatSubtitle: "Respuestas generadas por inteligencia artificial",
       aiChatPlaceholder: "Escribe tu pregunta...",
-      aiChatWelcome: "¡Hola! Soy el asistente virtual de MuniGuía-Casma. Puedes preguntarme lo que necesites sobre tus trámites municipales, en español o en quechua.",
+      aiChatWelcome: "¡Hola! Soy el asistente virtual de Pushaq-IA. Puedes preguntarme lo que necesites sobre tus trámites municipales, en español o en quechua.",
       aiChatSend: "Enviar",
       aiChatThinking: "Escribiendo...",
       aiChatError: "No se pudo conectar con el asistente. Verifica tu conexión a internet e intenta de nuevo.",
@@ -471,14 +471,14 @@ const TRANSLATIONS = {
       feedbackNoteLabel: "¿Imatataq allinchayta atisunman? (munaspalla)",
       feedbackNotePlaceholder: "Kaypi comentarioykita qillqay...",
       feedbackSubmit: "Comentariota apachiy",
-      feedbackThanks: "¡Sulpayki! Comentarioykiwan MuniGuía-Casmata allinchayta atisunchik.",
+      feedbackThanks: "¡Sulpayki! Comentarioykiwan Pushaq-IAta allinchayta atisunchik.",
       backHome: "Qallariyman kutiy",
       fichaLabel: "Trámite willakuy",
       footerNote: "Kayqa yachay prototipo, ciudadanokunata yanapananpaq ruwasqa. Manam Municipalidadpa oficial plataformanchu.",
       aiChatTitle: "IA Yanapaq",
       aiChatSubtitle: "Inteligencia artificial-wan kutichisqa",
       aiChatPlaceholder: "Tapukuykita qillqay...",
-      aiChatWelcome: "¡Napaykullayki! Ñuqam kani MuniGuía-Casmap yanapaqnin. Tapukuway ima trámite municipalmantapas, quechuapi otaq castellanopi.",
+      aiChatWelcome: "¡Napaykullayki! Ñuqam kani Pushaq-IAp yanapaqnin. Tapukuway ima trámite municipalmantapas, quechuapi otaq castellanopi.",
       aiChatSend: "Apachiy",
       aiChatThinking: "Qillqashan...",
       aiChatError: "Manam yanapaqwan tinkuyta atirqanichu. Internet conexionniykita qhaway, kutimanta intentay.",
@@ -891,7 +891,7 @@ const TRANSLATIONS = {
   let chatEnCurso = false;
 
   // Construye un resumen compacto de los trámites (en el idioma actual)
-  // para que la IA responda con información real de MuniGuía-Casma y no
+  // para que la IA responda con información real de Pushaq-IA y no
   // invente datos. Se genera solo con lo que ya existe en TRAMITES.
   function construirContextoTramites() {
     return TRAMITES.map(tObj => {
