@@ -9,18 +9,7 @@
      5) ACCESIBILIDAD        -> tamaño de letra y lectura por voz
      6) LÓGICA DE LA APP     -> idioma, navegación, búsqueda, render
 
-   ⚠️  SOBRE EL QUECHUA (leer antes de publicar)
-   Los textos en quechua de este archivo son una PRIMERA VERSIÓN de
-   referencia, escrita con apoyo de herramientas de traducción y
-   vocabulario general del quechua sureño (Cusco-Collao). No reemplazan
-   la revisión de una persona que hable el quechua de tu zona.
-   Antes de publicar la web, pide a alguien que domine el quechua local
-   que revise especialmente los campos "qu" de la sección 2 y 3.
-   Los nombres oficiales de trámites (como "Licencia de Funcionamiento"
-   o "DNI") se dejaron en español a propósito, porque son términos
-   legales sin una traducción oficial y así se usan en la práctica.
-   ========================================================================== */
-
+  
 
 /* ============================================================
    1) ÍCONOS SVG  ← reutilízalos donde quieras agregar un ícono nuevo
@@ -152,7 +141,7 @@ const TRAMITES = [
     },
     qu: {
       nombre: "Pago del Impuesto Predial",
-      nombreComprensible: "Wasi impuesto pagana",
+      nombreComprensible: "Wayi impuesto pagana",
       resumen: "Wata wata pagana impuesto, wasiyki otaq hallp'ayki rayku",
       descripcion: "Kay impuestotaqa wasiyuq, departamentoyuq otaq hallp'ayuq runakuna wata sapa paganku. Contadopi otaq tawa cuotapi pagayta atinku.",
       requisitos: [
