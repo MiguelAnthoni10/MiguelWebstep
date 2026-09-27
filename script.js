@@ -533,7 +533,7 @@ const TRANSLATIONS = {
 
   const els = {
     screens: document.querySelectorAll(".screen"),
-    tabs: document.querySelectorAll(".tab"),
+    tabs: document.querySelectorAll(".tab, .navlink"),
     tramiteList: document.getElementById("tramite-list"),
     emptyState: document.getElementById("empty-state"),
     searchInput: document.getElementById("search-input"),
@@ -548,7 +548,8 @@ const TRANSLATIONS = {
     aiPanelClear: document.getElementById("ai-panel-clear"),
     aiChatLog: document.getElementById("ai-chat-log"),
     aiChatInput: document.getElementById("ai-chat-input"),
-    aiChatSend: document.getElementById("ai-chat-send")
+    aiChatSend: document.getElementById("ai-chat-send"),
+    aiBackdrop: document.getElementById("ai-backdrop")
   };
 
   let currentLang = "es";
@@ -623,14 +624,24 @@ const TRANSLATIONS = {
   function showScreen(name) {
     window.MuniGuiaVoz.detener();
     els.screens.forEach(s => s.classList.toggle("is-active", s.dataset.screen === name));
-    els.tabs.forEach(tb => tb.classList.toggle("is-active", tb.dataset.tab === name));
-    els.app.scrollTop = 0;
+    // En la pantalla de detalle, "Inicio" sigue marcado en el menú
+    const tabActiva = name === "detail" ? "home" : name;
+    els.tabs.forEach(tb => tb.classList.toggle("is-active", tb.dataset.tab === tabActiva));
+    const destino = document.querySelector(`.screen[data-screen="${name}"] .scroll`);
+    if (destino) destino.scrollTop = 0;
   }
 
-  function goHome() { showScreen("home"); }
+  function goHome() {
+    if (els.aiPanel.classList.contains("is-open")) closeAiPanel();
+    showScreen("home");
+  }
 
-  /* ---------- Panel del asistente con IA ---------- */
-  const esEscritorio = () => window.matchMedia("(min-width: 900px)").matches;
+  /* ---------- Panel del asistente con IA ----------
+     Celular (<700px): pantalla completa.
+     Tablet (700–1099px): panel lateral con fondo oscuro.
+     PC (≥1100px): columna fija, siempre visible. */
+  const MQ_ESCRITORIO = "(min-width: 1100px)";
+  const esEscritorio = () => window.matchMedia(MQ_ESCRITORIO).matches;
 
   function openAiPanel() {
     if (els.aiChatLog.children.length === 0) {
@@ -638,18 +649,27 @@ const TRANSLATIONS = {
     }
     if (!esEscritorio()) {
       els.aiPanel.classList.add("is-open");
+      document.body.classList.add("ai-open");
+      els.tabs.forEach(tb => tb.classList.toggle("is-active", tb.dataset.tab === "assistant"));
     }
-    els.tabs.forEach(tb => tb.classList.toggle("is-active", tb.dataset.tab === "assistant"));
-    setTimeout(() => els.aiChatInput.focus(), esEscritorio() ? 0 : 260);
+    setTimeout(() => els.aiChatInput.focus(), esEscritorio() ? 0 : 300);
   }
 
   function closeAiPanel() {
     window.MuniGuiaVoz.detener();
     els.aiPanel.classList.remove("is-open");
-    els.tabs.forEach(tb => tb.classList.toggle("is-active", tb.dataset.tab === "home"));
+    document.body.classList.remove("ai-open");
+    const pantallaActual = document.querySelector(".screen.is-active");
+    const nombre = pantallaActual ? pantallaActual.dataset.screen : "home";
+    const tabActiva = nombre === "detail" ? "home" : nombre;
+    els.tabs.forEach(tb => tb.classList.toggle("is-active", tb.dataset.tab === tabActiva));
   }
 
   els.aiPanelClose.addEventListener("click", closeAiPanel);
+  els.aiBackdrop.addEventListener("click", closeAiPanel);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && els.aiPanel.classList.contains("is-open")) closeAiPanel();
+  });
   els.aiPanelClear.addEventListener("click", resetAiChat);
 
   document.querySelectorAll('[data-action="go-home"]').forEach(el =>
@@ -662,9 +682,10 @@ const TRANSLATIONS = {
 
   // Si la persona gira su celular o cambia de ventana a un tamaño de
   // escritorio, el panel deja de ser una pantalla superpuesta y pasa
-  // a ser el panel lateral fijo (ver CSS, @media min-width:900px).
-  window.matchMedia("(min-width: 900px)").addEventListener("change", () => {
+  // a ser la columna fija (ver CSS, @media min-width:1100px).
+  window.matchMedia(MQ_ESCRITORIO).addEventListener("change", () => {
     els.aiPanel.classList.remove("is-open");
+    document.body.classList.remove("ai-open");
   });
 
   /* ---------- Pantalla de inicio: tarjetas de trámites ---------- */
@@ -737,83 +758,88 @@ const TRANSLATIONS = {
     `).join("");
 
     els.detailBody.innerHTML = `
-      <div class="detail-hero">
-        <div class="detail-hero__icon" aria-hidden="true">${ICONS[tObj.icono] || ""}</div>
-        <div>
-          <h2 class="detail-hero__name">${nombrePrincipal(data)}</h2>
-          ${nombreOficial ? `<p class="detail-hero__official">${nombreOficial}</p>` : ""}
-        </div>
-      </div>
-
-      <button type="button" class="listen-btn" id="btn-listen">
-        <span class="listen-btn__icon" aria-hidden="true">${ICONS.altavoz}</span>
-        <span class="listen-btn__text">${t("listen")}</span>
-      </button>
-
-      <div class="detail-block">
-        <p class="detail-block__title">${ICONS.documento}<span>${t("description")}</span></p>
-        <p class="detail-desc">${data.descripcion}</p>
-      </div>
-
-      <div class="detail-block">
-        <p class="detail-block__title">${ICONS.checklist}<span>${t("whatToBring")}</span></p>
-        <ul class="req-list">
-          ${data.requisitos.map(r => `<li>${r}</li>`).join("")}
-        </ul>
-      </div>
-
-      <div class="detail-block">
-        <p class="detail-block__title">${ICONS.ruta}<span>${t("stepsTitle")}</span></p>
-        <ol class="step-list">
-          ${data.pasos.map((p, i) => `
-            <li>
-              <span class="step-num">${i + 1}</span>
-              <span class="step-text">${p}</span>
-            </li>`).join("")}
-        </ol>
-      </div>
-
-      <div class="detail-block">
-        <p class="detail-block__title">${ICONS.pin}<span>${t("whereTitle")}</span></p>
-        <div class="place-card">
-          <span class="place-card__icon" aria-hidden="true">${ICONS.pin}</span>
-          <div class="place-card__text">
-            <p><strong>${data.lugar.area}</strong></p>
-            <p>${data.lugar.direccion}</p>
-            <p>${data.lugar.horario}</p>
+      <div class="detail">
+        <div class="detail-top">
+          <div class="detail-hero">
+            <div class="detail-hero__icon" aria-hidden="true">${ICONS[tObj.icono] || ""}</div>
+            <div>
+              <h1 class="detail-hero__name">${nombrePrincipal(data)}</h1>
+              ${nombreOficial ? `<p class="detail-hero__official">${nombreOficial}</p>` : ""}
+            </div>
           </div>
+          <button type="button" class="listen-btn" id="btn-listen">
+            <span class="listen-btn__icon" aria-hidden="true">${ICONS.altavoz}</span>
+            <span class="listen-btn__text">${t("listen")}</span>
+          </button>
         </div>
+
+        <div class="detail-grid">
+          <section class="detail-block detail-block--full">
+            <h2 class="detail-block__title">${ICONS.documento}<span>${t("description")}</span></h2>
+            <p class="detail-desc">${data.descripcion}</p>
+          </section>
+
+          <section class="detail-block">
+            <h2 class="detail-block__title">${ICONS.checklist}<span>${t("whatToBring")}</span></h2>
+            <ul class="req-list">
+              ${data.requisitos.map(r => `<li>${r}</li>`).join("")}
+            </ul>
+          </section>
+
+          <section class="detail-block">
+            <h2 class="detail-block__title">${ICONS.ruta}<span>${t("stepsTitle")}</span></h2>
+            <ol class="step-list">
+              ${data.pasos.map((p, i) => `
+                <li>
+                  <span class="step-num">${i + 1}</span>
+                  <span class="step-text">${p}</span>
+                </li>`).join("")}
+            </ol>
+          </section>
+
+          <section class="detail-block">
+            <h2 class="detail-block__title">${ICONS.pin}<span>${t("whereTitle")}</span></h2>
+            <div class="place-card">
+              <span class="place-card__icon" aria-hidden="true">${ICONS.edificio}</span>
+              <div class="place-card__text">
+                <p><strong>${data.lugar.area}</strong></p>
+                <p>${data.lugar.direccion}</p>
+                <p>${data.lugar.horario}</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="detail-block detail-block--tips">
+            <h2 class="detail-block__title">${ICONS.bombilla}<span>${t("recommendationsTitle")}</span></h2>
+            <div class="tip-box">
+              <ul>${data.recomendaciones.map(r => `<li>${r}</li>`).join("")}</ul>
+            </div>
+          </section>
+
+          ${faqHtml ? `
+          <section class="detail-block detail-block--full detail-block--faq">
+            <h2 class="detail-block__title">${ICONS.ayuda}<span>${t("faqTitle")}</span></h2>
+            ${faqHtml}
+          </section>` : ""}
+
+          <section class="detail-block detail-block--full feedback" id="feedback-${tObj.id}">
+            <h2 class="feedback__title">${t("feedbackTitle")}</h2>
+            <div class="feedback__buttons">
+              <button type="button" class="fb-btn" data-fb="si">${t("yes")}</button>
+              <button type="button" class="fb-btn" data-fb="no">${t("no")}</button>
+            </div>
+            <label class="feedback__note-label" for="nota-${tObj.id}">${t("feedbackNoteLabel")}</label>
+            <textarea class="feedback__note" id="nota-${tObj.id}" placeholder="${t("feedbackNotePlaceholder")}"></textarea>
+            <button type="button" class="feedback__submit" disabled>${t("feedbackSubmit")}</button>
+            <div class="feedback__thanks" hidden>
+              <span class="stamp-mark">✓</span>
+              <span>${t("feedbackThanks")}</span>
+            </div>
+          </section>
+        </div>
+
+        <button type="button" class="back-home-btn" data-action="go-home">${t("backHome")}</button>
       </div>
-
-      <div class="detail-block">
-        <p class="detail-block__title">${ICONS.bombilla}<span>${t("recommendationsTitle")}</span></p>
-        <div class="tip-box">
-          <ul>${data.recomendaciones.map(r => `<li>${r}</li>`).join("")}</ul>
-        </div>
-      </div>
-
-      ${faqHtml ? `
-      <div class="detail-block">
-        <p class="detail-block__title">${ICONS.ayuda}<span>${t("faqTitle")}</span></p>
-        ${faqHtml}
-      </div>` : ""}
-
-      <div class="feedback" id="feedback-${tObj.id}">
-        <p class="feedback__title">${t("feedbackTitle")}</p>
-        <div class="feedback__buttons">
-          <button type="button" class="fb-btn" data-fb="si">${t("yes")}</button>
-          <button type="button" class="fb-btn" data-fb="no">${t("no")}</button>
-        </div>
-        <label class="feedback__note-label" for="nota-${tObj.id}">${t("feedbackNoteLabel")}</label>
-        <textarea class="feedback__note" id="nota-${tObj.id}" placeholder="${t("feedbackNotePlaceholder")}"></textarea>
-        <button type="button" class="feedback__submit" disabled>${t("feedbackSubmit")}</button>
-        <div class="feedback__thanks" hidden>
-          <span class="stamp-mark">✓</span>
-          <span>${t("feedbackThanks")}</span>
-        </div>
-      </div>
-
-      <button type="button" class="back-home-btn" data-action="go-home">${t("backHome")}</button>
     `;
 
     els.detailBody.querySelector('[data-action="go-home"]').addEventListener("click", goHome);
