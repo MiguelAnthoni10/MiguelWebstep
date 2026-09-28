@@ -3,33 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0B4F4C">
+<meta name="theme-color" content="#016163">
 <title>Pushaq-IA — Te ayudamos con tus trámites municipales</title>
-<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <script>
-  // Si assets/logo.png no carga, mostramos la inicial "P" en su lugar.
-  function handleLogoError(img) {
+  // Si la imagen del nombre (assets/pushaq-texto.png) no carga,
+  // mostramos el nombre escrito como texto normal.
+  function handleWordmarkError(img) {
     img.onerror = null;
     var span = document.createElement("span");
-    span.className = img.className + " brand__mark--fallback";
-    span.textContent = "P";
+    span.className = "brand__name";
+    span.textContent = "Pushaq IA";
     img.replaceWith(span);
-  }
-  // La pantalla de bienvenida intenta usar primero el escudo de Casma
-  // (assets/escudo-casma.png). Si no existe, usa el logo, y si tampoco, la inicial.
-  function handleShieldError(img) {
-    if (!img.dataset.fallbackStep) {
-      img.dataset.fallbackStep = "1";
-      img.src = "assets/logo.png";
-    } else {
-      handleLogoError(img);
-    }
   }
 </script>
 
@@ -39,9 +30,9 @@
   <header class="site-header">
     <div class="site-header__inner">
       <div class="brand">
-        <img class="brand__mark" id="brand-logo" src="assets/logo.png" alt="Logo de Pushaq-IA" onerror="handleLogoError(this)">
+        <img class="brand__icon" id="brand-logo" src="assets/pushaq-icono.png" alt="" onerror="this.style.display='none'">
         <div class="brand__text">
-          <span class="brand__name">Pushaq-IA</span>
+          <img class="brand__wordmark" src="assets/pushaq-texto.png" alt="Pushaq IA" onerror="handleWordmarkError(this)">
           <!-- Nombre de la institución: si hay que corregirlo, cámbialo aquí y en la pantalla de idioma -->
           <span class="brand__school">I.E.E.C. Mariscal Luzuriaga</span>
         </div>
@@ -90,9 +81,9 @@
         <div class="scroll">
           <div class="lang-layout">
             <div class="lang-hero">
-              <img class="lang-hero__logo" id="lang-logo" src="assets/escudo-casma.png" alt="Escudo de la Municipalidad de Casma" onerror="handleShieldError(this)">
-              <h1 class="lang-hero__name">Pushaq-IA</h1>
-              <p class="lang-hero__tag">Tu guía fácil para realizar trámites</p>
+              <h1 class="visually-hidden">Pushaq IA, asistente de trámites en quechua</h1>
+              <img class="lang-hero__banner" id="lang-logo" src="assets/pushaq-logo.png" alt="Pushaq IA, asistente de trámites en quechua" onerror="this.style.display='none'">
+              <p class="lang-hero__tag">Tu guía fácil para realizar trámites en la municipalidad</p>
               <p class="lang-hero__school">I.E.E.C. Mariscal Luzuriaga, Casma</p>
             </div>
 
@@ -144,7 +135,7 @@
                 </div>
               </div>
               <div class="hero__art" aria-hidden="true">
-                <img src="assets/logo.png" alt="" onerror="this.parentNode.style.display='none'">
+                <img src="assets/pushaq-icono.png" alt="" onerror="this.parentNode.style.display='none'">
               </div>
             </div>
 
@@ -204,7 +195,7 @@
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span data-i18n="back">Volver</span>
         </button>
-        <img class="ai-panel__avatar" src="assets/logo.png" alt="" onerror="this.style.display='none'">
+        <img class="ai-panel__avatar" src="assets/pushaq-avatar.png" alt="" onerror="this.style.display='none'">
         <div class="ai-panel__title-block">
           <h2 class="ai-panel__title" data-i18n="aiChatTitle">Asistente con IA</h2>
           <p class="ai-panel__subtitle" data-i18n="aiChatSubtitle">Respuestas generadas por inteligencia artificial</p>

@@ -16,7 +16,9 @@
 
 :root{
   /* Colores — cámbialos aquí y se actualiza toda la app */
-  --teal-900:  #0B4F4C;   /* cabecera, títulos fuertes */
+  --marca:     #016163;   /* fondo exacto del logo Pushaq IA */
+  --marca-osc: #014A4C;
+  --teal-900:  #0B4F4C;   /* títulos fuertes */
   --teal-700:  #0E6E69;   /* color principal */
   --teal-500:  #17968A;
   --teal-200:  #BFE3DC;
@@ -27,8 +29,8 @@
   --morado-500:#8E3A8A;
   --morado-100:#F4E7F2;
 
-  --sol-500:   #F2A900;   /* amarillo de tejido */
-  --sol-600:   #D48F00;
+  --sol-500:   #FDB704;   /* amarillo del logo */
+  --sol-600:   #D99A00;
   --sol-100:   #FFF1CC;
   --sol-texto: #6B4A00;
 
@@ -44,7 +46,7 @@
   --sombra-md: 0 10px 26px rgba(11,79,76,.12);
   --sombra-lg: 0 24px 60px rgba(11,40,40,.28);
 
-  --font-titulo: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --font-titulo: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
   --font-texto:  'Lexend', 'Segoe UI', system-ui, sans-serif;
 
   --fs-titulo-principal: clamp(1.9rem, 5.5vw, 2.9rem);
@@ -55,7 +57,7 @@
   --fs-auxiliar:         1rem;
 
   /* Franja de tejido andino (rombos) usada bajo la cabecera */
-  --tejido: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='16' viewBox='0 0 48 16'%3E%3Crect width='48' height='16' fill='%236A2468'/%3E%3Cpath d='M12 1L22 8L12 15L2 8Z' fill='%23F2A900'/%3E%3Cpath d='M12 5L16.5 8L12 11L7.5 8Z' fill='%23C23B2E'/%3E%3Cpath d='M36 1L46 8L36 15L26 8Z' fill='%2317968A'/%3E%3Cpath d='M36 5L40.5 8L36 11L31.5 8Z' fill='%23FFFFFF'/%3E%3C/svg%3E");
+  --tejido: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='16' viewBox='0 0 48 16'%3E%3Crect width='48' height='16' fill='%236A2468'/%3E%3Cpath d='M12 1L22 8L12 15L2 8Z' fill='%23FDB704'/%3E%3Cpath d='M12 5L16.5 8L12 11L7.5 8Z' fill='%23C23B2E'/%3E%3Cpath d='M36 1L46 8L36 15L26 8Z' fill='%2317968A'/%3E%3Cpath d='M36 5L40.5 8L36 11L31.5 8Z' fill='%23FFFFFF'/%3E%3C/svg%3E");
 }
 
 *{ box-sizing:border-box; }
@@ -110,13 +112,16 @@ img{ max-width:100%; }
 .app.lang-pending .site-nav,
 .app.lang-pending .access-group--lang,
 .app.lang-pending .ai-panel{ display:none !important; }
+/* En la pantalla de idioma el logo grande ya está al centro */
+.app.lang-pending .brand{ display:none; }
+.app.lang-pending .access-bar{ margin-left:auto; }
 
 /* ============================================================
    CABECERA
    ============================================================ */
 .site-header{
   flex-shrink:0;
-  background: var(--teal-900);
+  background: var(--marca);
   color:#fff;
   position:relative;
   z-index:5;
@@ -130,32 +135,25 @@ img{ max-width:100%; }
   padding: 10px 16px;
 }
 
-.brand{ display:flex; align-items:center; gap:10px; margin-right:auto; }
-.brand__mark{
-  width:46px; height:46px; flex-shrink:0;
-  border-radius:50%;
-  object-fit:cover;
-  background:#fff;
-  border: 2.5px solid var(--sol-500);
+.brand{ display:flex; align-items:center; gap:10px; margin-right:auto; min-width:0; }
+.brand__icon{
+  height:48px;
+  width:auto;
+  flex-shrink:0;
+  display:block;
 }
-.brand__mark--fallback{
-  display:inline-flex; align-items:center; justify-content:center;
-  background: var(--morado-700);
-  color:#fff;
-  font-family: var(--font-titulo);
-  font-weight:800;
-  font-size:1.2rem;
+.brand__wordmark{
+  display:block;
+  height:24px;
+  width:auto;
 }
-.lang-hero__logo.brand__mark--fallback{ font-size:4rem; }
 .brand__name{
   font-family: var(--font-titulo);
   font-weight:800;
   font-size:1.45rem;
-  letter-spacing:-.01em;
   line-height:1;
   white-space:nowrap;
 }
-
 .brand__text{ display:flex; flex-direction:column; gap:4px; min-width:0; }
 .brand__school{
   font-size:0.78rem;
@@ -271,25 +269,20 @@ img{ max-width:100%; }
   padding: 8px 0;
 }
 .lang-hero{ text-align:center; }
-.lang-hero__logo{
-  display:inline-flex;
-  width: clamp(150px, 42vw, 240px);
-  height: clamp(150px, 42vw, 240px);
-  border-radius:50%;
-  object-fit:cover;
-  background:#fff;
-  border:6px solid #fff;
-  box-shadow: 0 0 0 4px var(--sol-500), var(--sombra-md);
-  margin-bottom:18px;
+.lang-hero__banner{
+  display:block;
+  width:100%;
+  max-width:560px;
+  margin:0 auto 18px;
+  border-radius:26px;
+  box-shadow: 0 0 0 4px var(--blanco), 0 0 0 7px var(--sol-500), var(--sombra-md);
 }
-.lang-hero__name{
-  font-family: var(--font-titulo);
-  font-size: clamp(2.3rem, 7vw, 3.6rem);
-  font-weight:800;
-  letter-spacing:-.02em;
-  line-height:1;
-  margin:0 0 10px;
-  color: var(--teal-900);
+.visually-hidden{
+  position:absolute !important;
+  width:1px; height:1px;
+  overflow:hidden;
+  clip: rect(0 0 0 0);
+  white-space:nowrap;
 }
 .lang-hero__tag{
   margin:0;
@@ -377,7 +370,7 @@ img{ max-width:100%; }
 .hero{
   position:relative;
   overflow:hidden;
-  background: linear-gradient(150deg, var(--teal-700) 0%, var(--teal-900) 100%);
+  background: linear-gradient(150deg, var(--marca) 0%, var(--marca-osc) 100%);
   color:#fff;
   border-radius: 26px;
   padding: 26px 20px 34px;
@@ -413,12 +406,8 @@ img{ max-width:100%; }
 .hero__art img{
   display:block;
   width:100%;
-  aspect-ratio:1;
-  object-fit:cover;
-  border-radius:50%;
-  background:#fff;
-  border:6px solid #fff;
-  box-shadow: 0 0 0 4px var(--sol-500), 0 18px 40px rgba(0,0,0,.25);
+  height:auto;
+  filter: drop-shadow(0 14px 24px rgba(0,0,0,.28));
 }
 
 /* Buscador */
@@ -623,7 +612,7 @@ img{ max-width:100%; }
     padding: 44px 44px 56px;
     border-radius:32px;
   }
-  .hero__art{ display:block; max-width:260px; justify-self:center; }
+  .hero__art{ display:block; width:100%; max-width:330px; justify-self:center; }
   .unsure-btn{ padding: 30px 28px 24px; }
 }
 @container main (min-width: 1000px){
@@ -1098,8 +1087,8 @@ img{ max-width:100%; }
   border-radius:50%;
   object-fit:cover;
   flex-shrink:0;
-  border:2px solid var(--morado-700);
-  background:#fff;
+  border:2px solid var(--sol-500);
+  background: var(--marca);
 }
 .ai-panel__close + .ai-panel__avatar{ display:none; }
 .ai-panel__title-block{ flex:1; min-width:0; }
@@ -1262,8 +1251,8 @@ img{ max-width:100%; }
    ============================================================ */
 @media (min-width: 700px){
   .site-header__inner{ padding: 12px 28px; flex-wrap:nowrap; }
-  .brand__mark{ width:52px; height:52px; }
-  .brand__name{ font-size:1.6rem; }
+  .brand__icon{ height:56px; }
+  .brand__wordmark{ height:28px; }
   .site-nav{ display:flex; }
   .access-bar{ flex-basis:auto; flex-wrap:nowrap; justify-content:flex-end; gap:10px 16px; }
   .site-nav{ margin-right:4px; }
@@ -1290,7 +1279,8 @@ img{ max-width:100%; }
   .access-bar__label{ display:none; }
   .access-bar{ justify-content:flex-start; gap:10px; }
   .site-header__inner{ padding: 8px 14px 10px; gap:8px; }
-  .brand__mark{ width:40px; height:40px; }
+  .brand__icon{ height:44px; }
+  .brand__wordmark{ height:22px; }
   .weave{ height:10px; background-size: 30px 10px; }
 }
 
