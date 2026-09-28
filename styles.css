@@ -1251,8 +1251,8 @@ img{ max-width:100%; }
    ============================================================ */
 @media (min-width: 700px){
   .site-header__inner{ padding: 12px 28px; flex-wrap:nowrap; }
-  .brand__icon{ height:56px; }
-  .brand__wordmark{ height:28px; }
+  .brand__icon{ height:62px; }
+  .brand__wordmark{ height:31px; }
   .site-nav{ display:flex; }
   .access-bar{ flex-basis:auto; flex-wrap:nowrap; justify-content:flex-end; gap:10px 16px; }
   .site-nav{ margin-right:4px; }
